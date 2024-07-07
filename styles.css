@@ -1,0 +1,34 @@
+/* Global styles */
+body {
+    font-family: 'Arial', sans-serif;
+    background-image: radial-gradient(circle, #0a0e14, #191d29, #1e2430, #242b3a, #293241, #3a3b4e, #48485f, #565d71, #637684, #6e8a97, #799faa, #84b5be);
+    background-size: cover;
+    background-attachment: fixed;
+  }
+  
+  .container {
+    max-width: 1200px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  
+  #pokemonList {
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  }
+  
+  #pagination button {
+    margin: 0.5rem;
+  }
+  
+  /* Pokemon Card styles */
+  .card {
+    background-color: rgba(255, 255, 255, 0.2); /* Transparent white background */
+    backdrop-filter: blur(10px); /* Blur effect */
+    border-radius: 8px;
+    overflow: hidden;
+  }
+  
+  .card:hover {
+    transform: scale(1.05);
+  }
+  
