@@ -22,6 +22,24 @@ async function fetchAllPokemonData() {
   }
 }
 
+// Fetch all Pokémon types and populate the type filter dropdown
+async function fetchPokemonTypes() {
+  try {
+    const response = await fetch('https://pokeapi.co/api/v2/type');
+    const data = await response.json();
+    const typeSelect = document.getElementById('typeFilter');
+
+    data.results.forEach(type => {
+      const option = document.createElement('option');
+      option.value = type.name;
+      option.textContent = type.name.charAt(0).toUpperCase() + type.name.slice(1);
+      typeSelect.appendChild(option);
+    });
+  } catch (error) {
+    console.error('Error fetching Pokémon types:', error);
+  }
+}
+
 // Render Pokémon cards based on current page
 function renderPokemonCards() {
   const pokemonListElement = document.getElementById('pokemonList');
@@ -48,12 +66,11 @@ function renderPokemonCards() {
   renderPagination();
 }
 
-// Render pagination with Next and Previous
+// Render pagination with Next and Previous buttons
 function renderPagination() {
   const paginationElement = document.getElementById('pagination');
   paginationElement.innerHTML = '';
 
-  // Previous button
   const prevButton = document.createElement('button');
   prevButton.textContent = 'Previous';
   prevButton.classList.add('mx-1', 'px-4', 'py-2', 'bg-gray-300', 'hover:bg-gray-400', 'text-black', 'rounded-md', 'focus:outline-none');
@@ -66,7 +83,6 @@ function renderPagination() {
   });
   paginationElement.appendChild(prevButton);
 
-  // Show up to 5 page numbers at a time
   const maxVisiblePages = 5;
   const startPage = Math.max(1, currentPage - Math.floor(maxVisiblePages / 2));
   const endPage = Math.min(totalPages, startPage + maxVisiblePages - 1);
@@ -85,7 +101,6 @@ function renderPagination() {
     paginationElement.appendChild(button);
   }
 
-  // Next button
   const nextButton = document.createElement('button');
   nextButton.textContent = 'Next';
   nextButton.classList.add('mx-1', 'px-4', 'py-2', 'bg-gray-300', 'hover:bg-gray-400', 'text-black', 'rounded-md', 'focus:outline-none');
@@ -117,8 +132,8 @@ document.getElementById('closeModal').addEventListener('click', () => {
 document.getElementById('searchInput').addEventListener('input', function () {
   const searchTerm = this.value.toLowerCase();
   filteredPokemon = allPokemon.filter(pokemon => pokemon.name.toLowerCase().includes(searchTerm));
-  currentPage = 1; // Reset to the first page of results
-  totalPages = Math.ceil(filteredPokemon.length / itemsPerPage); // Update total pages
+  currentPage = 1;
+  totalPages = Math.ceil(filteredPokemon.length / itemsPerPage);
   renderPokemonCards();
 });
 
@@ -130,13 +145,13 @@ document.getElementById('typeFilter').addEventListener('change', function () {
   } else {
     filteredPokemon = allPokemon.filter(pokemon => pokemon.types.some(type => type.type.name === selectedType));
   }
-  currentPage = 1; // Reset to the first page of results
-  totalPages = Math.ceil(filteredPokemon.length / itemsPerPage); // Update total pages
+  currentPage = 1;
+  totalPages = Math.ceil(filteredPokemon.length / itemsPerPage);
   renderPokemonCards();
 });
 
 // Initial load
 document.addEventListener('DOMContentLoaded', () => {
-  fetchAllPokemonData(); // Fetch all Pokémon data initially
-  fetchPokemonTypes(); // Fetch Pokémon types for the filter
+  fetchAllPokemonData();
+  fetchPokemonTypes();
 });
